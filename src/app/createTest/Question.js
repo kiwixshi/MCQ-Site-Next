@@ -19,14 +19,33 @@ function Question({qNo, gatherVals}){
         gatherVals(qNo, testContent);
     }, [question, options, imgURL]);
 
+    let reader = new FileReader();
+
+    reader.addEventListener("load", ()=>{
+        console.log(reader.result);
+        setURL(reader.result);
+    }, false);
+
     function upImg(event){
         const file = event.target.files[0];
         if(file){
-            const upURL = URL.createObjectURL(file);
-            setURL(upURL);
+            console.log(file)
+            // let blob = new Blob(['http://localhost:3000/d64d6194-6f3c-4650-aed0-48ad3f8f888a'], {type: 'text/plain'})
+            // console.log(blob);
+            // const upURL = URL.createObjectURL(file);
+            reader.readAsDataURL(file);
+            // console.log(reader.result)
+            // setURL(reader.result);
+            // setURL(upURL);
         }
-        // console.log("image updated");
+        console.log("image updated");
+        // console.log(imgURL);
     }
+    
+    useEffect(()=>{
+        console.log(imgURL);
+        console.log(reader.result)
+    }, [imgURL])
 
     function updateQ(event){
         setQuestion(event.target.value);
