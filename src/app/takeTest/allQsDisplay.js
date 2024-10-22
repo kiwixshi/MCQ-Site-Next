@@ -22,7 +22,7 @@ function AllQsDisplay({testContent, teach, getAnswers}){
 
     return (<>
     {testContent && testContent.map(
-        (testqs, index)=>(<IndivQDisplay indexQ={index} object={testqs} teach={teach} updateAnswers={updateAnswers}/>)
+        (testqs, index)=>(<IndivQDisplay key={index} indexQ={index} object={testqs} teach={teach} updateAnswers={updateAnswers}/>)
     )}
     </>)
 }   

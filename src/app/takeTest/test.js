@@ -70,7 +70,7 @@ function Test({test, onComplete, stud}){
                 </div>
             </nav>
             <div className="flex flex-col m-8 gap-8 justify-center items-center">
-                {<AllQsDisplay testContent = {testP.testContent} teach = {false} getAnswers={getAns}/>}
+                {<AllQsDisplay testContent = {testP.testContent} teach = {!(stud)} getAnswers={getAns}/>}
             </div>
         </div>
     );
