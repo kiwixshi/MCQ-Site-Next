@@ -1,8 +1,31 @@
 'use client'
 
 import { useRouter } from "next/navigation";
+import {FC} from 'react';
 
-function Score({test, onComplete, testAnswers}) {
+interface TestContentProps{
+    qName: string;
+    options: string[];
+    correct_answers: number[];
+    img?: string;
+};
+
+interface TestTypeProps{
+    index: number;
+    testName: string;
+    testTime: number;
+    notCompleted: boolean;
+    testContent: TestContentProps[];
+};
+
+interface ScoreProps{
+    test: TestTypeProps;
+    onComplete: (test: TestTypeProps)=>void;
+    testAnswers: boolean[][];
+};
+
+
+const Score: FC<ScoreProps> = ({test, onComplete, testAnswers}) => {
     const router = useRouter();
     console.log("in score sheet: ");
     console.log(testAnswers);

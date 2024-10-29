@@ -1,4 +1,8 @@
-import React from "react"
+import React, {FC} from "react"
+
+// interface FinishOptProps{
+//     addOption: ()=>{};
+// }
 
 function FinishOpt({addOption}){
     return (<div className="flex flex-row gap-4 border-gray-500">

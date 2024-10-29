@@ -1,28 +1,48 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import Countdown from "react-countdown"
 import AllQsDisplay from "./allQsDisplay";
 import Score from "./scoreSheet";
 
+interface TestContentProps{
+    qName: string;
+    options: string[];
+    correct_answers: number[];
+    img?: string;
+}
 
-function Test({test, onComplete, stud}){
+interface TestTypeProps{
+    index: number;
+    testName: string;
+    testTime: number;
+    notCompleted: boolean;
+    testContent: TestContentProps[];
+};
+
+
+interface TestProps{
+    test: TestTypeProps;
+    onComplete: (test: TestTypeProps)=>void;
+    stud: boolean;
+}
+
+
+const Test: FC<TestProps> = ({test, onComplete, stud}) => {
     // console.log("in test component: ")
     // console.log(test);
     
     //initialize state from local storage value
-    const [testP, setTest] = useState(() => {
-        // if(typeof window != undefined){
-            const storedTestVal = window.localStorage.getItem('testVal');
-            if (storedTestVal != null) {
-                try {
-                    return JSON.parse(storedTestVal);
-                } catch (error) {
-                    console.error("Failed to parse stored testVal:", error);
-                }
+    const [testP, setTest] = useState<TestTypeProps>(() => {
+        const storedTestVal = window.localStorage.getItem('testVal');
+        if (storedTestVal != null) {
+            try {
+                return JSON.parse(storedTestVal);
+            } catch (error) {
+                console.error("Failed to parse stored testVal:", error);
             }
-        // }
-        return test || {};
+        }
+        return test || {} as TestTypeProps;
     });
 
     //if change update testVal
@@ -33,10 +53,10 @@ function Test({test, onComplete, stud}){
     }, [testP]);
 
     // on completing the test
-    const [studAns, setStud] = useState([]);  
-    const [startTime] = useState(Date.now());
+    const [studAns, setStud] = useState<boolean[][]>([]);  
+    const [startTime] = useState<number>(Date.now());
 
-    function getAns(object){
+    function getAns(object: boolean[][]){
         setStud(object);
         // console.log(studAns);
     }
@@ -46,7 +66,7 @@ function Test({test, onComplete, stud}){
     }, [studAns])
 
     //when timer ends
-    const renderer = ({ hours, minutes, seconds, completed }) => {
+    const renderer = ({ hours, minutes, seconds, completed}) => {
         if (completed) {
           return (
             <Score test={testP} onComplete={onComplete} testAnswers={studAns}/>

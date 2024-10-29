@@ -1,10 +1,10 @@
 'use client'
 
-import { useRemoveTestContext } from "@/app/main/editTests"
-import Test from "@/app/takeTest/test"
-import { useState } from "react"
+import { useRemoveTestContext } from "../main/editTests"
+import Test from "../takeTest/test"
+import { useState, FC } from "react"
 
-function Parent(){
+const Parent : FC = () => {
     const finishTest = useRemoveTestContext();
     const [testP, setTest] = useState(() => {
         // if(typeof window !== "undefined"){

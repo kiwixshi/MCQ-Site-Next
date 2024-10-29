@@ -1,13 +1,18 @@
-import React from "react";
+import React, {FC} from "react";
 
-function Option({index, updateOption}){
+interface OptionProps{
+    index: number;
+    updateOption: (index: number, value: string, check: boolean)=>void;
+}
 
-    const handleCheckChange = (e) => {
+const Option: FC<OptionProps> = ({index, updateOption}) => {
+
+    const handleCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateOption(index, null, e.target.checked);
         // console.log("option correctness updated");
     }
 
-    const handleTextChange = (e) => {
+    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateOption(index, e.target.value, null);
         // console.log("option text updated");
     }

@@ -1,12 +1,39 @@
 'use client'
 
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, createContext, FC} from 'react';
 
-const TestContext = React.createContext();
-const AddTestContext = React.createContext();
-const DeleteTestContext = React.createContext();
-const SelectTestContext = React.createContext();
-const ClickedTestContext = React.createContext();
+interface TestContentProps{
+    qName: string;
+    options: string[];
+    correct_answers: number[];
+    img?: string;
+};
+
+interface TestTypeProps{
+    index: number;
+    testName: string;
+    testTime: number;
+    notCompleted: boolean;
+    testContent: TestContentProps[];
+};
+
+interface HalfTestTypeProps{
+    testName: string;
+    testTime: number;
+    notCompleted: boolean;
+    testContent: TestContentProps[];
+};
+
+type addingTest = (obj: HalfTestTypeProps) => void;
+type deletingTest = (obj: TestTypeProps) => void;
+type selectingTest = (obj: TestTypeProps) => void;
+
+
+const TestContext = createContext<TestTypeProps[]>(null);
+const AddTestContext = createContext<addingTest>(null);
+const DeleteTestContext = createContext<deletingTest>(null);
+const SelectTestContext = createContext<selectingTest>(null);
+const ClickedTestContext = createContext<TestTypeProps>(null);
 
 function useTestContext(){
     return useContext(TestContext);
@@ -29,8 +56,9 @@ function useSelectTestContext(){
 }
 
 function EditTests( {children} ){
-    const [selectedTest, setSelectedTest] = useState([]);
-    const [allTests, changeTests] = useState([]);
+    const [selectedTest, setSelectedTest] = useState<TestTypeProps>();
+    const [indTest, setInd] = useState(1);
+    const [allTests, changeTests] = useState<TestTypeProps[]>([]);
     
     useEffect(()=>{
         const storedTests = window.localStorage.getItem('allTs');
@@ -39,6 +67,7 @@ function EditTests( {children} ){
             try {
                 if (Array.isArray(parsedTests)) {
                     changeTests(parsedTests);
+                    setInd(parsedTests.length);
                     // console.log("set test value to ");
                     // console.log(parsedTests);
                 }else{
@@ -52,23 +81,25 @@ function EditTests( {children} ){
         }  
     }, []);
 
-  const addTest = (arr) =>{
+  const addTest = (arr: HalfTestTypeProps) =>{
     // console.log('clicked at add!');
     const currentTests = allTests || [];
-    const newTest = {index: currentTests.length, ...arr};  
-    changeTests([...currentTests, newTest])
-    // console.log(allTests);
+    const newTest = { index: indTest, ...arr };
+    console.log(newTest);
+    changeTests([...currentTests, newTest]);
   }
 
   useEffect(() => {
     if (allTests && allTests.length>0) {
         window.localStorage.setItem('allTs', JSON.stringify(allTests));
         // console.log("i am the problem >((")
-        console.log(allTests);
+        console.log(allTests.length);
+        // console.log(indTest);
+        setInd(indTest+1);
     }
   }, [allTests]);
 
-  const removeTest = (test) =>{
+  const removeTest = (test: TestTypeProps) =>{
     console.log(test);
     const testIndex = allTests.findIndex((t)=>(t.index===test.index));
     console.log(testIndex);
@@ -76,7 +107,7 @@ function EditTests( {children} ){
     console.log(allTests);
   }
 
-  const handleTestClick = (test)=>{
+  const handleTestClick = (test: TestTypeProps)=>{
     setSelectedTest(test);
     window.localStorage.setItem('testVal',  JSON.stringify(test));
   }

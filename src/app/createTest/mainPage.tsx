@@ -1,20 +1,33 @@
 'use client'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, FC, ReactElement} from 'react'
 import Link from 'next/link';
 import Question from './Question';
 import { useAddTestContext } from '../main/editTests';
 import { useRouter } from 'next/navigation';
 
-function MainPage(){
-    const [questions, editQuestions] = useState([]);
-    const [finalArr, setArr] = useState([]);
-    const [testName, setName] = useState("");
-    const [testTime, setTime] = useState(0);
+interface TestContentProps{
+    index: number;
+    qName: string;
+    options: string[];
+    correct_answers: number[];
+    img?: string;
+};
+
+interface QuestionProps{
+    qNo: number;
+    gatherVals: (qNo: number, testContent: TestContentProps)=>void;
+}
+
+const MainPage: FC = () => {
+    const [questions, editQuestions] = useState<ReactElement<QuestionProps>[]>([]);
+    const [finalArr, setArr] = useState<TestContentProps[]>([]);
+    const [testName, setName] = useState<string>("");
+    const [testTime, setTime] = useState<number>(0);
     const router = useRouter();
 
     const addTest = useAddTestContext();
 
-    const gatherVals=(qNo, object)=>{
+    const gatherVals=(qNo: number, object: TestContentProps)=>{
         console.log("test content in gatherVals: ");
         // console.log(object);
         // console.log(finalArr?"empty":"nopety");
@@ -25,8 +38,8 @@ function MainPage(){
             // console.log("new question!");
         }else{
             // console.log(qNo, finalArr.length);
-            currArr = [...finalArr]
-            currArr[qNo] = object
+            currArr = [...finalArr];
+            currArr[qNo] = object;
             // console.log("question edited");
         }
         setArr(currArr);
@@ -51,14 +64,14 @@ function MainPage(){
         }, 3000);
     }
 
-    function handleTestName(event){
+    function handleTestName(event: React.ChangeEvent<HTMLInputElement>){
         setName(event.target.value);
         // console.log(testName);
     }
 
     
-    function handleTestTime(event){
-        setTime(event.target.value);
+    function handleTestTime(event: React.ChangeEvent<HTMLInputElement>){
+        setTime(Number(event.target.value));
         // console.log(testTime);
     }
 
@@ -88,12 +101,6 @@ function MainPage(){
                     </svg>
                     <span>Finish Quiz</span>
                 </button>
-                {/* <Link href='/teacher' className="bg-teal-400 hover:bg-teal-600 text-gray-800 font-bold m-12 py-2 px-4 rounded gap-4 inline-flex items-center justify-center w-1/5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
-                    </svg>
-                    <span>Go to dashboard</span>
-                </Link> */}
             </div>
         </div>
     </div>

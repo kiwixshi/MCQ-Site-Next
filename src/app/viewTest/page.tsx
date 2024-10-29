@@ -1,7 +1,8 @@
-import EditTests from "@/app/main/editTests";
+import EditTests from "../main/editTests";
 import Parent from "./parent";
+import { FC } from "react";
 
-function Page(){
+const Page : FC = () => {
     return(<>
         <EditTests>
             <Parent></Parent>

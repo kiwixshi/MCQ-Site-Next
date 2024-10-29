@@ -5,8 +5,9 @@ import TestDisplay from "./testDisplay";
 import Link from "next/link";
 
 import { useTestContext, useSelectTestContext } from "./editTests";
+import {FC} from "react";
 
-function Teacher() {
+const Teacher: FC = () => {
     const tests=useTestContext();
     const onTestClick=useSelectTestContext();
 
@@ -26,7 +27,7 @@ function Teacher() {
             {/* <button onClick={debug}>debug</button> */}
             <h3 className="font-bold text-lg p-8 py-0">Existing Tests</h3>
             <div className="p-8 flex md:flex-row sm:flex-col flex-wrap gap-6 max-h-screen">
-                {tests!=null&&tests.map(test => test.notCompleted&&(<TestDisplay key={test.id} test={test} onClick={onTestClick} teach={true}/>))}
+                {tests!=null&&tests.map(test => test.notCompleted&&(<TestDisplay key={test.index} test={test} onClick={onTestClick} teach={true}/>))}
             </div>
         </div>
     )};

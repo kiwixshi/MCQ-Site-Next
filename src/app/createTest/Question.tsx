@@ -1,14 +1,31 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC, SetStateAction } from "react";
 import Option from "./options";
 import FinishOpt from "./finishopt";
 
-function Question({qNo, gatherVals}){
-    const [imgURL, setURL] = useState("");
-    const [question, setQuestion] = useState("");
-    const [options, setOptions] = useState([{text:"", correct:false}]);
-    const [moreOpt, setMoreOpt] = useState(true);
+interface TestContentProps{
+    qName: string;
+    options: string[];
+    correct_answers: number[];
+    img?: string;
+};
+
+interface QuestionProps{
+    qNo: number;
+    gatherVals: (qNo: number, testContent: TestContentProps)=>void;
+}
+
+interface OptionArrProps{
+    text:string;
+    correct: boolean;
+}
+
+const Question: FC<QuestionProps> = ({qNo, gatherVals}) => {
+    const [imgURL, setURL] = useState<string>("");
+    const [question, setQuestion] = useState<string>("");
+    const [options, setOptions] = useState<OptionArrProps[]>([{text:"", correct:false}]);
+    const [moreOpt, setMoreOpt] = useState<boolean>(true);
 
     useEffect(()=>{
         const correct_answers = options.map((opt, index)=>(opt.correct?index:null)).filter((ind)=>(ind!==null));
@@ -23,10 +40,12 @@ function Question({qNo, gatherVals}){
 
     reader.addEventListener("load", ()=>{
         console.log(reader.result);
-        setURL(reader.result);
+        if (typeof reader.result === "string"){
+            setURL(reader.result);
+        }
     }, false);
 
-    function upImg(event){
+    function upImg(event: React.ChangeEvent<HTMLInputElement>){
         const file = event.target.files[0];
         if(file){
             console.log(file)
@@ -47,14 +66,14 @@ function Question({qNo, gatherVals}){
         console.log(reader.result)
     }, [imgURL])
 
-    function updateQ(event){
+    function updateQ(event: React.ChangeEvent<HTMLInputElement>){
         setQuestion(event.target.value);
         // console.log(question);
         // console.log("question updated");
         // console.log(qNo);
     }
 
-    function updateOption(index, text, correct){
+    function updateOption(index: number, text: string, correct: boolean){
         const currOptions = [...options];
         if(text!==null){
             currOptions[index].text = text;

@@ -1,8 +1,9 @@
 'use client'
 import MainPage from "./mainPage";
 import EditTests from "../main/editTests";
+import {FC} from "react"
 
-function Page(){
+const Page : FC = () => {
     return(
         <EditTests>
             <MainPage></MainPage>

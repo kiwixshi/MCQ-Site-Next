@@ -2,11 +2,30 @@
 
 import { useRemoveTestContext } from "../main/editTests";
 import Test from "./test";
-import { useState } from "react";
+import { useState, FC } from "react";
 
-function Parent(){
+interface TestContentProps{
+    qName: string;
+    options: string[];
+    correct_answers: number[];
+    img?: string;
+}
+
+interface TestTypeProps{
+    index: number;
+    testName: string;
+    testTime: number;
+    notCompleted: boolean;
+    testContent: TestContentProps[];
+};
+
+interface ParentProps{
+
+}
+
+const Parent: FC<ParentProps> = () => {
     const finishTest = useRemoveTestContext();
-    const [testP, setTest] = useState(() => {
+    const [testP, setTest] = useState<TestTypeProps>(() => {
         // if(typeof window !== "undefined"){
             const storedTestVal = window.localStorage.getItem('testVal');
             if (storedTestVal !== null) {
