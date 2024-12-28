@@ -4,19 +4,7 @@ import Link from 'next/link';
 import Question from './Question';
 import { useAddTestContext } from '../main/editTests';
 import { useRouter } from 'next/navigation';
-
-interface TestContentProps{
-    index: number;
-    qName: string;
-    options: string[];
-    correct_answers: number[];
-    img?: string;
-};
-
-interface QuestionProps{
-    qNo: number;
-    gatherVals: (qNo: number, testContent: TestContentProps)=>void;
-}
+import { TestContentProps, QuestionProps } from '../types';
 
 const MainPage: FC = () => {
     const [questions, editQuestions] = useState<ReactElement<QuestionProps>[]>([]);
@@ -52,6 +40,7 @@ const MainPage: FC = () => {
         editQuestions([...questions, <Question key={questions.length} qNo = {questions.length} gatherVals = {gatherVals}/>])
         // console.log("question added!");
     }
+    
     function finishQuiz(){
         // console.log("array on submission: ")
         // console.log(finalArr);

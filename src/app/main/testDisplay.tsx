@@ -5,28 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, FC } from "react";
 import Test from "../takeTest/test"
+import { TestDisplayProps } from "../types";
 
-interface TestContentProps{
-    qName: string;
-    options: string[];
-    correct_answers: number[];
-    img?: string;
-};
-
-interface TestTypeProps{
-    index: number;
-    testName: string;
-    testTime: number;
-    notCompleted: boolean;
-    testContent: TestContentProps[];
-};
-
-interface TestDisplayProps{
-    key: number;
-    test: TestTypeProps;
-    onClick: (test: TestTypeProps) => void;
-    teach: boolean;
-}
 
 const TestDisplay: FC<TestDisplayProps> = ({key, test, onClick, teach}) => {
     const router = useRouter();

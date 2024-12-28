@@ -2,27 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import {FC} from 'react';
-
-interface TestContentProps{
-    qName: string;
-    options: string[];
-    correct_answers: number[];
-    img?: string;
-};
-
-interface TestTypeProps{
-    index: number;
-    testName: string;
-    testTime: number;
-    notCompleted: boolean;
-    testContent: TestContentProps[];
-};
-
-interface ScoreProps{
-    test: TestTypeProps;
-    onComplete: (test: TestTypeProps)=>void;
-    testAnswers: boolean[][];
-};
+import { TestProps, ScoreProps } from "../types";
 
 
 const Score: FC<ScoreProps> = ({test, onComplete, testAnswers}) => {

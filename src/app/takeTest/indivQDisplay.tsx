@@ -1,19 +1,7 @@
 'use client'
 
 import React, {useEffect, useState, FC} from "react";
-
-interface IndivQDisplayProps{
-    indexQ: number;
-    object: {
-        qName: string;
-        options: string[];
-        correct_answers: number[];
-        img?: string;
-    };
-    teach: boolean;
-    updateAnswers: (index: number, checked: boolean[]) => void;
-}
-
+import { IndivQDisplayProps } from "../types";
 
 const IndivQDisplay: FC<IndivQDisplayProps> = ({indexQ, object, teach, updateAnswers}) => {
     const [correctOpts, updateOption] = useState<boolean[]>(new Array(object.options.length).fill(false));

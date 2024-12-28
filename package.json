@@ -1,6 +1,7 @@
 {
   "name": "mcq-next",
   "homepage": "https://kiwixshi.github.io/MCQ-Site-Next",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,11 +13,17 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.1.8",
+    "@reduxjs/toolkit": "^2.5.0",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
     "next": "^14.2.11",
-    "node": "^22.9.0",
+    "node": "^22.12.0",
+    "nodemon": "^3.1.9",
     "react": "^18",
     "react-countdown": "^2.3.6",
     "react-dom": "^18",
+    "react-redux": "^9.2.0",
     "typescript": "^5.6.3"
   },
   "devDependencies": {

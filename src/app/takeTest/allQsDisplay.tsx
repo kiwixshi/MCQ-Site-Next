@@ -2,19 +2,7 @@
 
 import { useEffect, useState, FC } from "react";
 import IndivQDisplay from "./indivQDisplay";
-
-interface TestContentProps{
-    qName: string;
-    options: string[];
-    correct_answers: number[];
-    img?: string;
-}
-
-interface AllQsDisplayProps{
-    testContent: TestContentProps[];
-    teach: boolean;
-    getAnswers: (stuAns: boolean[][]) => void;
-}
+import { AllQsDisplayProps } from "../types";
 
 
 const AllQsDisplay: FC<AllQsDisplayProps> = ({testContent, teach, getAnswers}) =>{

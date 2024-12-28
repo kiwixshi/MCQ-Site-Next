@@ -1,9 +1,5 @@
 import React, {FC} from "react";
-
-interface OptionProps{
-    index: number;
-    updateOption: (index: number, value: string, check: boolean)=>void;
-}
+import { OptionProps } from "../types";
 
 const Option: FC<OptionProps> = ({index, updateOption}) => {
 

@@ -2,12 +2,26 @@
 
 import TestDisplay from "./testDisplay";
 import { useSelectTestContext, useTestContext } from "./editTests";
+import { useGetAllTestsQuery } from "../api/api";
 import {FC} from 'react';
 
 
 const Student: FC = () => {
   const tests=useTestContext();
   const onTestClick=useSelectTestContext();
+
+  const {data, isError, isLoading} = useGetAllTestsQuery();
+
+  if (isError){
+    return (
+      <h1>something went wrong :/</h1>
+    )
+  }
+
+  if(isLoading){
+    return <h1>pls wait</h1>
+  }
+
   return (
     <div>
       <nav className="bg-sky-200 dark:bg-gray-900 dark:border-gray-700 border-neutral-900">
@@ -16,7 +30,7 @@ const Student: FC = () => {
       <h2 className="pt-8 pl-8 text-3xl">Welcome</h2>
       <h3 className="pt-8 pl-8 text-2xl">Your Tests</h3>
       <div className="p-8 flex md:flex-row sm:flex-col flex-wrap gap-6 max-h-screen">
-        {tests!=null?tests.map(test => test.notCompleted&&(<TestDisplay key={test.index} test={test} onClick={onTestClick} teach={false}/>)):(<div></div>)}
+        {data!=null?data.map(test => test.notCompleted&&(<TestDisplay key={test.index} test={test} onClick={onTestClick} teach={false}/>)):(<div></div>)}
       </div>
     </div>
   );

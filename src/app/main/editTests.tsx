@@ -1,39 +1,19 @@
 'use client'
 
 import React, {useState, useEffect, useContext, createContext, FC} from 'react';
+import { TestDetailProps, TestProps } from '../types';
+import { useRouter } from 'next/navigation';
 
-interface TestContentProps{
-    qName: string;
-    options: string[];
-    correct_answers: number[];
-    img?: string;
-};
-
-interface TestTypeProps{
-    index: number;
-    testName: string;
-    testTime: number;
-    notCompleted: boolean;
-    testContent: TestContentProps[];
-};
-
-interface HalfTestTypeProps{
-    testName: string;
-    testTime: number;
-    notCompleted: boolean;
-    testContent: TestContentProps[];
-};
-
-type addingTest = (obj: HalfTestTypeProps) => void;
-type deletingTest = (obj: TestTypeProps) => void;
-type selectingTest = (obj: TestTypeProps) => void;
+type addingTest = (obj: TestDetailProps) => void;
+type deletingTest = (obj: TestProps) => void;
+type selectingTest = (obj: TestProps) => void;
 
 
-const TestContext = createContext<TestTypeProps[]>(null);
+const TestContext = createContext<TestProps[]>(null);
 const AddTestContext = createContext<addingTest>(null);
 const DeleteTestContext = createContext<deletingTest>(null);
 const SelectTestContext = createContext<selectingTest>(null);
-const ClickedTestContext = createContext<TestTypeProps>(null);
+const ClickedTestContext = createContext<TestProps>(null);
 
 function useTestContext(){
     return useContext(TestContext);
@@ -56,9 +36,10 @@ function useSelectTestContext(){
 }
 
 function EditTests( {children} ){
-    const [selectedTest, setSelectedTest] = useState<TestTypeProps>();
+    const [selectedTest, setSelectedTest] = useState<TestProps>();
     const [indTest, setInd] = useState(1);
-    const [allTests, changeTests] = useState<TestTypeProps[]>([]);
+    const [allTests, changeTests] = useState<TestProps[]>([]);
+    const router = useRouter();
     
     useEffect(()=>{
         const storedTests = window.localStorage.getItem('allTs');
@@ -81,7 +62,7 @@ function EditTests( {children} ){
         }  
     }, []);
 
-  const addTest = (arr: HalfTestTypeProps) =>{
+  const addTest = (arr: TestDetailProps) =>{
     // console.log('clicked at add!');
     const currentTests = allTests || [];
     const newTest = { index: indTest, ...arr };
@@ -92,14 +73,12 @@ function EditTests( {children} ){
   useEffect(() => {
     if (allTests && allTests.length>0) {
         window.localStorage.setItem('allTs', JSON.stringify(allTests));
-        // console.log("i am the problem >((")
         console.log(allTests.length);
-        // console.log(indTest);
         setInd(indTest+1);
     }
   }, [allTests]);
 
-  const removeTest = (test: TestTypeProps) =>{
+  const removeTest = (test: TestProps) =>{
     console.log(test);
     const testIndex = allTests.findIndex((t)=>(t.index===test.index));
     console.log(testIndex);
@@ -107,9 +86,10 @@ function EditTests( {children} ){
     console.log(allTests);
   }
 
-  const handleTestClick = (test: TestTypeProps)=>{
-    setSelectedTest(test);
-    window.localStorage.setItem('testVal',  JSON.stringify(test));
+  const handleTestClick = (test: TestProps)=>{
+    // setSelectedTest(test);
+    // window.localStorage.setItem('testVal',  JSON.stringify(test));
+    router.push("/takeTest/"+test["index"]);
   }
 
   useEffect(() => {
@@ -117,18 +97,20 @@ function EditTests( {children} ){
   }, [selectedTest]);
   
   return(
-  <TestContext.Provider value={allTests}>
-    <AddTestContext.Provider value={addTest}>
-        <DeleteTestContext.Provider value={removeTest}>
-                <SelectTestContext.Provider value={handleTestClick}>
-                    <ClickedTestContext.Provider value={selectedTest}>
-                        {children}
-                    </ClickedTestContext.Provider>
-                </SelectTestContext.Provider>
-        </DeleteTestContext.Provider>
-    </AddTestContext.Provider>
-  </TestContext.Provider>
-  )
+    <>
+        <TestContext.Provider value={allTests}>
+            <AddTestContext.Provider value={addTest}>
+                <DeleteTestContext.Provider value={removeTest}>
+                        <SelectTestContext.Provider value={handleTestClick}>
+                            <ClickedTestContext.Provider value={selectedTest}>
+                                {children}
+                            </ClickedTestContext.Provider>
+                        </SelectTestContext.Provider>
+                </DeleteTestContext.Provider>
+            </AddTestContext.Provider>
+        </TestContext.Provider>
+    </>
+  );
 }
 
 export default EditTests;

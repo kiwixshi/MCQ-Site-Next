@@ -3,18 +3,8 @@
 import { useState, useEffect, FC, SetStateAction } from "react";
 import Option from "./options";
 import FinishOpt from "./finishopt";
+import { QuestionProps } from "../types";
 
-interface TestContentProps{
-    qName: string;
-    options: string[];
-    correct_answers: number[];
-    img?: string;
-};
-
-interface QuestionProps{
-    qNo: number;
-    gatherVals: (qNo: number, testContent: TestContentProps)=>void;
-}
 
 interface OptionArrProps{
     text:string;
