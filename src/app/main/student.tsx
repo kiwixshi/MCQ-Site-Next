@@ -1,13 +1,12 @@
 'use client'
 
 import TestDisplay from "./testDisplay";
-import { useSelectTestContext, useTestContext } from "./editTests";
+import { useSelectTestContext } from "./editTests";
 import { useGetAllTestsQuery } from "../api/api";
 import {FC} from 'react';
 
 
 const Student: FC = () => {
-  const tests=useTestContext();
   const onTestClick=useSelectTestContext();
 
   const {data, isError, isLoading} = useGetAllTestsQuery();

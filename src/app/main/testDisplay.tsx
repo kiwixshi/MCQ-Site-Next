@@ -16,15 +16,11 @@ const TestDisplay: FC<TestDisplayProps> = ({key, test, onClick, teach}) => {
         // setLoading(true);
         // console.log("clicked!")
         // onClick(test);  
-        onClick(test);
+        // onClick(test);
         if(teach){
-            setTimeout(()=>{
-                router.push('/viewTest');
-            }, 3000);
+            router.push(`/viewTest/${test["index"]}`);
         }else{
-            setTimeout(()=>{
-                router.push('/takeTest');
-            }, 3000);
+            router.push(`/takeTest/${test["index"]}`);
         }
         // console.log(test);
     }

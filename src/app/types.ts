@@ -70,6 +70,5 @@ export interface IndivQDisplayProps{
 
 export interface ScoreProps{
     test: TestProps;
-    onComplete: (test: TestProps)=>void;
     testAnswers: boolean[][];
 };

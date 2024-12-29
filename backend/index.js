@@ -89,11 +89,6 @@ let database = [
     }
 ];
 
-app.get("/", (req, res)=>{
-    console.log("hello");
-    console.log(req.body);
-});
-
 
 app.get("/getTests", (req, res)=>{
     try{
@@ -107,13 +102,9 @@ app.get("/getTests", (req, res)=>{
 app.get("/fetchTest/:index", (req, res)=>{
     try{
         const {index} = req.params;
-        console.log(index);
-        // console.log(typeof(database[0].index));//number
-        // console.log(typeof(index));//string
         const test = database.find((data) => (data.index === Number(index)));
         res.status(200).send(test);
     }catch(error){
-        // res.send(error)
         console.log(error);
         res.status(500).json({message: "internal server error", error: error});
     }
@@ -124,7 +115,6 @@ app.post("/createTest", (req, res) => {
     try {
         req.body["index"] = database.length;
         database.push(req.body);
-        // console.log(database);
         res.status(200).json({ message: "data received"});
     } catch (error) {
         res.status(500).json({ message: "internal server error" });

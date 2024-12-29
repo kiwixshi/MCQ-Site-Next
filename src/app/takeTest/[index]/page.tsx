@@ -26,7 +26,7 @@ const Page: FC = () => {
     console.log("this is the data");
     console.log(data);
     return(<>
-        <div><h1>hello {index}</h1></div>
+        {/* <div><h1>hello {index}</h1></div> */}
         <EditTests>
             <Parent test={data}></Parent>
         </EditTests>

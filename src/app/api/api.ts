@@ -11,8 +11,24 @@ export const api = createApi({
 
         getSpecificTest: builder.query<TestProps, number>({
             query: (index)=>({url: `/fetchTest/${index}`})
+        }),
+
+        addNewTest: builder.mutation({
+            query: (newTest) => ({
+                url: "/createTest",
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: newTest,
+            })
+        }),
+
+        finishCurTest: builder.mutation({
+            query: (index)=>({
+                url: `/testOver/${index}`,
+                method: "PATCH",
+            })
         })
     })
 })
 
-export const {useGetAllTestsQuery, useGetSpecificTestQuery} = api;
+export const {useGetAllTestsQuery, useGetSpecificTestQuery, useAddNewTestMutation, useFinishCurTestMutation} = api;

@@ -9,38 +9,16 @@ import { TestProps} from "../types";
 
 interface TestCompProps{
     test: TestProps;
-    onComplete: (test: TestProps)=>void;
     stud: boolean;
 }
 
 
-const Test: FC<TestCompProps> = ({test, onComplete, stud}) => {
-    // const [testP, setTest] = useState<TestProps>(() => {
-    //     const storedTestVal = window.localStorage.getItem('testVal');
-    //     if (storedTestVal != null) {
-    //         try {
-    //             return JSON.parse(storedTestVal);
-    //         } catch (error) {
-    //             console.error("Failed to parse stored testVal:", error);
-    //         }
-    //     }
-    //     return test || {} as TestProps;
-    // });
-
-    //if change update testVal
-    // useEffect(() => {
-    //     if (testP) {
-    //         window.localStorage.setItem('testVal', JSON.stringify(testP));
-    //     }
-    // }, [testP]);
-
-    // on completing the test
+const Test: FC<TestCompProps> = ({test, stud}) => {
     const [studAns, setStud] = useState<boolean[][]>([]);  
     const [startTime] = useState<number>(Date.now());
 
     function getAns(object: boolean[][]){
         setStud(object);
-        // console.log(studAns);
     }
 
     useEffect(()=>{
@@ -51,7 +29,7 @@ const Test: FC<TestCompProps> = ({test, onComplete, stud}) => {
     const renderer = ({ hours, minutes, seconds, completed}) => {
         if (completed) {
           return (
-            <Score test={test} onComplete={onComplete} testAnswers={studAns}/>
+            <Score test={test} testAnswers={studAns}/>
           );
         }else{
             return (<h1>{hours}:{minutes}:{seconds}</h1>);
@@ -65,7 +43,6 @@ const Test: FC<TestCompProps> = ({test, onComplete, stud}) => {
                 <h3 className="p-8 text-2xl">{test.testName}</h3>
                 <div className="p-8">
                     {stud&&(<Countdown date={startTime+test.testTime*60000} renderer={renderer}/>)}
-                    {/* {<Countdown date={Date.now()+testP.testTime*60000} renderer={renderer}/>} */}
                 </div>
             </nav>
             <div className="flex flex-col m-8 gap-8 justify-center items-center">

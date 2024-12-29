@@ -1,10 +1,9 @@
 'use client'
-import React, {useState, useEffect, FC, ReactElement} from 'react'
-import Link from 'next/link';
+import React, {useState, FC, ReactElement} from 'react'
 import Question from './Question';
-import { useAddTestContext } from '../main/editTests';
 import { useRouter } from 'next/navigation';
 import { TestContentProps, QuestionProps } from '../types';
+import { useAddNewTestMutation } from '../api/api';
 
 const MainPage: FC = () => {
     const [questions, editQuestions] = useState<ReactElement<QuestionProps>[]>([]);
@@ -13,44 +12,45 @@ const MainPage: FC = () => {
     const [testTime, setTime] = useState<number>(0);
     const router = useRouter();
 
-    const addTest = useAddTestContext();
+    const [addNewTest, {data, isError, isLoading, isSuccess}] = useAddNewTestMutation();
+
+    if (isError){
+        return (<h1>something went wrong :/</h1>);
+    }
+
+    if (isLoading){
+        return (<h1>pls wait</h1>)
+    }
+
+    if (isSuccess){
+        router.push("/teacher");
+    }
+
+    const handleClick = async () => {
+        try {    
+            const contentArr = [...finalArr];
+            const sendObj = {testName: testName, testTime: testTime, notCompleted: true, testContent: contentArr};
+            await addNewTest(sendObj);
+        } catch (error){
+            console.log("error "+error);
+        }
+    }
 
     const gatherVals=(qNo: number, object: TestContentProps)=>{
-        console.log("test content in gatherVals: ");
-        // console.log(object);
-        // console.log(finalArr?"empty":"nopety");
         var currArr = []
         if (finalArr.length < qNo+1){
-            // console.log(qNo, finalArr.length);
             currArr = finalArr.length?[...finalArr, object]:[object];
-            // console.log("new question!");
         }else{
-            // console.log(qNo, finalArr.length);
             currArr = [...finalArr];
             currArr[qNo] = object;
-            // console.log("question edited");
         }
         setArr(currArr);
-        // console.log(currArr);
-        // console.log(finalArr);
     };
 
 
     function addQuestion(){
         editQuestions([...questions, <Question key={questions.length} qNo = {questions.length} gatherVals = {gatherVals}/>])
         // console.log("question added!");
-    }
-    
-    function finishQuiz(){
-        // console.log("array on submission: ")
-        // console.log(finalArr);
-        const contentArr = [...finalArr];
-        const sendObj = {testName: testName, testTime: testTime, notCompleted: true, testContent: contentArr};
-        console.log(sendObj);
-        addTest(sendObj);
-        setTimeout(()=>{
-            router.push('/teacher');
-        }, 3000);
     }
 
     function handleTestName(event: React.ChangeEvent<HTMLInputElement>){
@@ -63,6 +63,7 @@ const MainPage: FC = () => {
         setTime(Number(event.target.value));
         // console.log(testTime);
     }
+
 
     return(
         <div>
@@ -84,7 +85,7 @@ const MainPage: FC = () => {
                     </svg>
                     <span>New question</span>
                 </button>
-                <button onClick={finishQuiz} className="bg-teal-400 hover:bg-teal-600 text-gray-800 font-bold m-12 py-2 px-4 rounded gap-4 inline-flex items-center justify-center w-1/5">
+                <button onClick={handleClick} className="bg-teal-400 hover:bg-teal-600 text-gray-800 font-bold m-12 py-2 px-4 rounded gap-4 inline-flex items-center justify-center w-1/5">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
                     </svg>

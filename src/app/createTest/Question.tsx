@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, FC, SetStateAction } from "react";
+import { useState, useEffect, FC } from "react";
 import Option from "./options";
 import FinishOpt from "./finishopt";
 import { QuestionProps } from "../types";
@@ -39,16 +39,9 @@ const Question: FC<QuestionProps> = ({qNo, gatherVals}) => {
         const file = event.target.files[0];
         if(file){
             console.log(file)
-            // let blob = new Blob(['http://localhost:3000/d64d6194-6f3c-4650-aed0-48ad3f8f888a'], {type: 'text/plain'})
-            // console.log(blob);
-            // const upURL = URL.createObjectURL(file);
             reader.readAsDataURL(file);
-            // console.log(reader.result)
-            // setURL(reader.result);
-            // setURL(upURL);
         }
         console.log("image updated");
-        // console.log(imgURL);
     }
     
     useEffect(()=>{

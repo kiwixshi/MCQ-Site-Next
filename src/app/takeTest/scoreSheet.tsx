@@ -3,20 +3,29 @@
 import { useRouter } from "next/navigation";
 import {FC} from 'react';
 import { TestProps, ScoreProps } from "../types";
+import { useFinishCurTestMutation } from "../api/api";
 
 
-const Score: FC<ScoreProps> = ({test, onComplete, testAnswers}) => {
+const Score: FC<ScoreProps> = ({test, testAnswers}) => {
     const router = useRouter();
-    console.log("in score sheet: ");
-    console.log(testAnswers);
+    const [finTest, {data, isError, isLoading, isSuccess}] = useFinishCurTestMutation();
+
+    if(isError){
+        return <h1>something went wrong :/</h1>
+    }
+
+    
+    if(isLoading){
+        return <h1>please wait</h1>
+    }
+
     var check={};
     var stud={};
     Object.keys(testAnswers).forEach((key)=>{
         check[key]=test.testContent[key]["correct_answers"];
         stud[key]=testAnswers[key];
     });
-    console.log(check);
-    console.log(stud);
+    
     var stuMarks = 0;
     var totalMarks = 0
     Object.keys(stud).forEach((key)=>{
@@ -27,16 +36,20 @@ const Score: FC<ScoreProps> = ({test, onComplete, testAnswers}) => {
         }
         totalMarks += check[key].length;
     });
-    console.log(stuMarks, totalMarks);
-    function finishTest(){
-        // const [loading, setLoading] = useState(false);
-        // setLoading(true);
-        onComplete(test);
-        setTimeout(()=>{
-            router.push('/student');
-        }, 3000);
-        
+    
+    const finishTest = async ()=>{
+        try{
+            await finTest(test["index"]);
+        } catch(error){
+            console.log("this is the error: "+error);
+        }
     }
+
+
+    if (isSuccess){
+        router.push("/student");
+    }
+
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>

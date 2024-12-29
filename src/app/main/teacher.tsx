@@ -3,12 +3,11 @@
 import React from "react";
 import TestDisplay from "./testDisplay";
 import Link from "next/link";
-import { useTestContext, useSelectTestContext } from "./editTests";
+import { useSelectTestContext } from "./editTests";
 import { useGetAllTestsQuery } from "../api/api";
 import {FC} from "react";
 
 const Teacher: FC = () => {
-    const tests=useTestContext();
     const onTestClick=useSelectTestContext();
 
     const {data, isError, isLoading} = useGetAllTestsQuery();
