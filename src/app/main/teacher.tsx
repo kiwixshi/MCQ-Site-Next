@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSelectTestContext } from "./editTests";
 import { useGetAllTestsQuery } from "../api/api";
 import {FC} from "react";
+import Spinner from "../spinner";
 
 const Teacher: FC = () => {
     const onTestClick=useSelectTestContext();
@@ -20,7 +21,7 @@ const Teacher: FC = () => {
 
     if (isLoading){
         return (
-            <h1>pls wait</h1>
+            <Spinner></Spinner>
         )
     }
 

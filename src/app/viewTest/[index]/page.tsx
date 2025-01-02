@@ -5,6 +5,7 @@ import EditTests from "../../main/editTests";
 import Parent from "./parent";
 import { FC } from "react";
 import { useGetSpecificTestQuery } from "../../api/api";
+import Spinner from "../../spinner";
 
 const Page : FC = () => {
     const params = useParams();
@@ -17,7 +18,7 @@ const Page : FC = () => {
     }
 
     if (isLoading){
-        return <h1>pls wait :/</h1>
+        return <Spinner></Spinner>
     }
 
 

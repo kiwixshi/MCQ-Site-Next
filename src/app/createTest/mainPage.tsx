@@ -4,6 +4,7 @@ import Question from './Question';
 import { useRouter } from 'next/navigation';
 import { TestContentProps, QuestionProps } from '../types';
 import { useAddNewTestMutation } from '../api/api';
+import Spinner from '../spinner';
 
 const MainPage: FC = () => {
     const [questions, editQuestions] = useState<ReactElement<QuestionProps>[]>([]);
@@ -19,7 +20,7 @@ const MainPage: FC = () => {
     }
 
     if (isLoading){
-        return (<h1>pls wait</h1>)
+        return <Spinner></Spinner>
     }
 
     if (isSuccess){

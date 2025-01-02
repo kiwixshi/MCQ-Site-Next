@@ -4,7 +4,7 @@ import TestDisplay from "./testDisplay";
 import { useSelectTestContext } from "./editTests";
 import { useGetAllTestsQuery } from "../api/api";
 import {FC} from 'react';
-
+import Spinner from "../spinner";
 
 const Student: FC = () => {
   const onTestClick=useSelectTestContext();
@@ -18,7 +18,7 @@ const Student: FC = () => {
   }
 
   if(isLoading){
-    return <h1>pls wait</h1>
+    return <Spinner></Spinner>
   }
 
   return (

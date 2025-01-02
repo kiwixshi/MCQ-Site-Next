@@ -5,6 +5,7 @@ import Parent from "./parent";
 import {FC} from 'react';
 import { useParams } from "next/navigation";
 import { useGetSpecificTestQuery } from "../../api/api";
+import Spinner from "../../spinner";
 
 const Page: FC = () => {
     const params = useParams();
@@ -19,9 +20,7 @@ const Page: FC = () => {
     }
 
     if (isLoading){
-        return <h1>
-            pls wait
-        </h1>
+        return <Spinner></Spinner>
     }
     console.log("this is the data");
     console.log(data);
